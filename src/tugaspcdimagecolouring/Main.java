@@ -233,9 +233,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_button_orginialImageActionPerformed
 
     private void button_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_exitActionPerformed
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
+       
                 int confirmed = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to exit the program?", "Exit Program Message Box",
                         JOptionPane.YES_NO_OPTION);
@@ -243,8 +241,7 @@ public class Main extends javax.swing.JFrame {
                 if (confirmed == JOptionPane.YES_OPTION) {
                     dispose();
                 }
-            }
-        });
+            
 //        System.exit(0);
 //        dispose();
     }//GEN-LAST:event_button_exitActionPerformed
