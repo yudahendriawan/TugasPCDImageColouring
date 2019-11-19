@@ -12,6 +12,7 @@ import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -24,8 +25,10 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.HighGui;
+import org.opencv.imgproc.Imgproc;
 
 /**
  *
@@ -58,7 +61,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         button_negatifEffect = new javax.swing.JButton();
         button_grayScale = new javax.swing.JButton();
-        button_rotate = new javax.swing.JButton();
+        button_colorSpace = new javax.swing.JButton();
         button_levelSlicing = new javax.swing.JButton();
         button_tresholding = new javax.swing.JButton();
         button_contrast = new javax.swing.JButton();
@@ -101,10 +104,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        button_rotate.setBackground(new java.awt.Color(0, 0, 0));
-        button_rotate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_rotate.setForeground(new java.awt.Color(0, 204, 204));
-        button_rotate.setText("Rotate");
+        button_colorSpace.setBackground(new java.awt.Color(0, 0, 0));
+        button_colorSpace.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        button_colorSpace.setForeground(new java.awt.Color(0, 204, 204));
+        button_colorSpace.setText("Color Space");
+        button_colorSpace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_colorSpaceActionPerformed(evt);
+            }
+        });
 
         button_levelSlicing.setBackground(new java.awt.Color(0, 0, 0));
         button_levelSlicing.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -200,7 +208,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(280, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(111, 111, 111))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -213,7 +221,7 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_rotate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_colorSpace, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button_levelSlicing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -222,7 +230,7 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(57, 57, 57)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -231,7 +239,7 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(label_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
@@ -242,15 +250,15 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button_reset)
                 .addGap(13, 13, 13)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                        .addComponent(button_originalImage, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(button_negatifEffect)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(button_grayScale)
                         .addGap(18, 18, 18)
-                        .addComponent(button_rotate)
+                        .addComponent(button_colorSpace)
                         .addGap(18, 18, 18)
                         .addComponent(button_levelSlicing)
                         .addGap(18, 18, 18)
@@ -263,8 +271,8 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(button_highPassFilter)
                         .addGap(18, 18, 18)
                         .addComponent(button_highBoostFilter))
-                    .addComponent(label_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                    .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(button_exit)
@@ -275,7 +283,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 630));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 630));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -336,6 +344,7 @@ public class Main extends javax.swing.JFrame {
             }
 
             label_image.setText(null);
+            label_image.setIcon(null);
             label_image.setIcon(ResizeImage(img));
 
         } catch (NullPointerException e) {
@@ -364,6 +373,7 @@ public class Main extends javax.swing.JFrame {
             } catch (Exception e) {
             }
             label_image.setText(null);
+            label_image.setIcon(null);
             label_image.setIcon(ResizeImage(bi));
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
@@ -405,6 +415,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
             label_image.setText(null);
+            label_image.setIcon(null);
             label_image.setIcon(ResizeImage(image));
 //            try {
 //                bi = ImageIO.read(file);
@@ -422,6 +433,31 @@ public class Main extends javax.swing.JFrame {
 //        }
         }
     }//GEN-LAST:event_button_grayScaleActionPerformed
+
+    private void button_colorSpaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_colorSpaceActionPerformed
+        try {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            File input = new File(text_filePath.getText());
+            BufferedImage image = ImageIO.read(input);
+            byte[] data = ((DataBufferByte) image.getRaster().
+                    getDataBuffer()).getData();
+            Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
+            mat.put(0, 0, data);
+            Mat mat1 = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
+            Imgproc.cvtColor(mat, mat1, Imgproc.COLOR_RGB2HSV);
+            byte[] data1 = new byte[mat1.rows() * mat1.cols() * (int) (mat1.elemSize())];
+            mat1.get(0, 0, data1);
+            BufferedImage image1 = new BufferedImage(mat1.cols(), mat1.rows(), 5);
+            image1.getRaster().setDataElements(0, 0, mat1.cols(), mat1.rows(), data1);
+            label_image.setText(null);
+            label_image.setIcon(null);
+            label_image.setIcon(ResizeImage(image1));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        }
+    }//GEN-LAST:event_button_colorSpaceActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -453,6 +489,7 @@ public class Main extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton button_colorSpace;
     private javax.swing.JButton button_contrast;
     private javax.swing.JButton button_exit;
     private javax.swing.JButton button_fileChooser;
@@ -464,7 +501,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton button_negatifEffect;
     private javax.swing.JButton button_originalImage;
     private javax.swing.JButton button_reset;
-    private javax.swing.JButton button_rotate;
     private javax.swing.JButton button_tresholding;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
