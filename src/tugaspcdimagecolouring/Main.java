@@ -29,11 +29,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Main extends javax.swing.JFrame {
 
+    JFileChooser chooser;
+    String path = "C:\\Users\\pc\\Pictures";
+    // public static final 
+
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
+        
     }
 
     /**
@@ -48,7 +53,6 @@ public class Main extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel2 = new javax.swing.JPanel();
         button_negatifEffect = new javax.swing.JButton();
-        button_orginialImage = new javax.swing.JButton();
         button_grayScale = new javax.swing.JButton();
         button_rotate = new javax.swing.JButton();
         button_levelSlicing = new javax.swing.JButton();
@@ -63,6 +67,8 @@ public class Main extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         text_filePath = new javax.swing.JTextField();
         label_image = new javax.swing.JLabel();
+        button_reset = new javax.swing.JButton();
+        button_originalImage = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -75,16 +81,9 @@ public class Main extends javax.swing.JFrame {
         button_negatifEffect.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         button_negatifEffect.setForeground(new java.awt.Color(0, 204, 204));
         button_negatifEffect.setText("Efek Negatif");
-
-        button_orginialImage.setBackground(new java.awt.Color(0, 0, 0));
-        button_orginialImage.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_orginialImage.setForeground(new java.awt.Color(0, 204, 204));
-        button_orginialImage.setText("Gambar Asli");
-        button_orginialImage.setBorder(null);
-        button_orginialImage.setBorderPainted(false);
-        button_orginialImage.addActionListener(new java.awt.event.ActionListener() {
+        button_negatifEffect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button_orginialImageActionPerformed(evt);
+                button_negatifEffectActionPerformed(evt);
             }
         });
 
@@ -167,52 +166,76 @@ public class Main extends javax.swing.JFrame {
         label_image.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 1, true));
         label_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        button_reset.setBackground(new java.awt.Color(0, 0, 0));
+        button_reset.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        button_reset.setForeground(new java.awt.Color(0, 204, 204));
+        button_reset.setText("Reset");
+        button_reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_resetActionPerformed(evt);
+            }
+        });
+
+        button_originalImage.setBackground(new java.awt.Color(0, 0, 0));
+        button_originalImage.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        button_originalImage.setForeground(new java.awt.Color(0, 204, 204));
+        button_originalImage.setText("Original Image");
+        button_originalImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_originalImageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(280, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(111, 111, 111))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(button_orginialImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_rotate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_levelSlicing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21)
-                        .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(button_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_rotate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_levelSlicing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(57, 57, 57)
-                        .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(text_filePath)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(label_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(button_reset)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_orginialImage, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(button_negatifEffect)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -236,20 +259,17 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(button_exit)
-                        .addComponent(button_fileChooser)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(text_filePath, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(button_fileChooser)))
                 .addGap(30, 30, 30))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 630));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 630));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void button_orginialImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_orginialImageActionPerformed
-
-    }//GEN-LAST:event_button_orginialImageActionPerformed
 
     private void button_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_exitActionPerformed
         int confirmed = JOptionPane.showConfirmDialog(null,
@@ -260,23 +280,11 @@ public class Main extends javax.swing.JFrame {
             dispose();
         }
 
-//        System.exit(0);
-//        dispose();
+        System.exit(0);
+        dispose();
     }//GEN-LAST:event_button_exitActionPerformed
 
     private void button_fileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_fileChooserActionPerformed
-
-        
-//        chooser.setDialogTitle("Choose Image..");
-//        FileNameExtensionFilter filter
-//                = new FileNameExtensionFilter("JPG Images", "jpg", "png");
-//        chooser.setFileFilter(filter);
-//
-//        chooser.showOpenDialog(null);
-//        File file = chooser.getSelectedFile();
-        
-//        String filename = file().getName();
-//        text_filePath.setText(filename);
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(file());
@@ -284,37 +292,43 @@ public class Main extends javax.swing.JFrame {
         }
         label_image.setText(null);
         label_image.setIcon(ResizeImage(bi));
-        
+
     }//GEN-LAST:event_button_fileChooserActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void button_negatifEffectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_negatifEffectActionPerformed
+        label_image.setIcon(null);
+    }//GEN-LAST:event_button_negatifEffectActionPerformed
 
-        /* Create and display the form */
+    private void button_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_resetActionPerformed
+        label_image.setIcon(null);
+        label_image.setText("Show Image");
+        text_filePath.setText(null);
+    }//GEN-LAST:event_button_resetActionPerformed
+
+    private void button_originalImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_originalImageActionPerformed
+        //   File file = null;
+        try {
+            File file = new File(text_filePath.getText());
+            BufferedImage bi = null;
+            try {
+                bi = ImageIO.read(file);
+            } catch (Exception e) {
+            }
+            label_image.setText(null);
+            label_image.setIcon(ResizeImage(bi));
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+//
+//        if (confirmed == JOptionPane.YES_OPTION) {
+//            dispose();
+//        }
+        }
+
+    }//GEN-LAST:event_button_originalImageActionPerformed
+
+    public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
@@ -329,23 +343,19 @@ public class Main extends javax.swing.JFrame {
         ImageIcon image = new ImageIcon(newImg);
         return image;
     }
-    
-//    public BufferedImage bufferdImage(){
-//        
-//    }
-    
-    public File file(){
-        JFileChooser chooser = new JFileChooser("C:\\Users\\pc\\Pictures");
+
+    public File file() {
+        JFileChooser chooser = new JFileChooser(path);
         chooser.setDialogTitle("Choose Image..");
         FileNameExtensionFilter filter
                 = new FileNameExtensionFilter("JPG Images", "jpg", "png");
         chooser.setFileFilter(filter);
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
-        text_filePath.setText(file.getName());
+        text_filePath.setText(file.toString());
         return file;
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_contrast;
@@ -357,7 +367,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton button_levelSlicing;
     private javax.swing.JButton button_lowPassFilter;
     private javax.swing.JButton button_negatifEffect;
-    private javax.swing.JButton button_orginialImage;
+    private javax.swing.JButton button_originalImage;
+    private javax.swing.JButton button_reset;
     private javax.swing.JButton button_rotate;
     private javax.swing.JButton button_tresholding;
     private javax.swing.JFileChooser jFileChooser1;
