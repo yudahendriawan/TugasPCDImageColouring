@@ -12,6 +12,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -245,7 +248,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_orginialImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_orginialImageActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_button_orginialImageActionPerformed
 
     private void button_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_exitActionPerformed
@@ -262,23 +265,26 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_button_exitActionPerformed
 
     private void button_fileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_fileChooserActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Choose Image..");
-        FileNameExtensionFilter filter
-                = new FileNameExtensionFilter("JPG Images", "jpg", "png");
-        chooser.setFileFilter(filter);
 
-        chooser.showOpenDialog(null);
-        File file = chooser.getSelectedFile();
-        String filename = file.getName();
-        text_filePath.setText(filename);
+        
+//        chooser.setDialogTitle("Choose Image..");
+//        FileNameExtensionFilter filter
+//                = new FileNameExtensionFilter("JPG Images", "jpg", "png");
+//        chooser.setFileFilter(filter);
+//
+//        chooser.showOpenDialog(null);
+//        File file = chooser.getSelectedFile();
+        
+//        String filename = file().getName();
+//        text_filePath.setText(filename);
         BufferedImage bi = null;
         try {
-            bi = ImageIO.read(file);
+            bi = ImageIO.read(file());
         } catch (Exception e) {
         }
         label_image.setText(null);
         label_image.setIcon(ResizeImage(bi));
+        
     }//GEN-LAST:event_button_fileChooserActionPerformed
 
     /**
@@ -320,9 +326,26 @@ public class Main extends javax.swing.JFrame {
         ImageIcon MyImage = new ImageIcon(ImagePath);
         Image img = MyImage.getImage();
         Image newImg = img.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImg, BorderLayout.CENTER);
+        ImageIcon image = new ImageIcon(newImg);
         return image;
     }
+    
+//    public BufferedImage bufferdImage(){
+//        
+//    }
+    
+    public File file(){
+        JFileChooser chooser = new JFileChooser("C:\\Users\\pc\\Pictures");
+        chooser.setDialogTitle("Choose Image..");
+        FileNameExtensionFilter filter
+                = new FileNameExtensionFilter("JPG Images", "jpg", "png");
+        chooser.setFileFilter(filter);
+        chooser.showOpenDialog(null);
+        File file = chooser.getSelectedFile();
+        text_filePath.setText(file.getName());
+        return file;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_contrast;
