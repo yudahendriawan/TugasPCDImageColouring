@@ -6,6 +6,7 @@
 package tugaspcdimagecolouring;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
@@ -22,6 +23,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.highgui.HighGui;
 
 /**
  *
@@ -38,7 +42,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-        
+
     }
 
     /**
@@ -70,7 +74,7 @@ public class Main extends javax.swing.JFrame {
         button_reset = new javax.swing.JButton();
         button_originalImage = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -91,6 +95,11 @@ public class Main extends javax.swing.JFrame {
         button_grayScale.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         button_grayScale.setForeground(new java.awt.Color(0, 204, 204));
         button_grayScale.setText("Grayscale");
+        button_grayScale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_grayScaleActionPerformed(evt);
+            }
+        });
 
         button_rotate.setBackground(new java.awt.Color(0, 0, 0));
         button_rotate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -296,7 +305,47 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_button_fileChooserActionPerformed
 
     private void button_negatifEffectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_negatifEffectActionPerformed
-        label_image.setIcon(null);
+
+        //read image
+        try {
+            BufferedImage img = null;
+            File f;
+            f = new File(text_filePath.getText());
+            try {
+                img = ImageIO.read(f);
+            } catch (Exception e) {
+            }
+            int width = img.getWidth();
+            int height = img.getHeight();
+            //convert to negative
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int p = img.getRGB(x, y);
+                    int a = (p >> 24) & 0xff;
+                    int r = (p >> 16) & 0xff;
+                    int g = (p >> 8) & 0xff;
+                    int b = p & 0xff;
+                    //subtract RGB from 255
+                    r = 255 - r;
+                    g = 255 - g;
+                    b = 255 - b;
+                    //set new RGB value
+                    p = (a << 24) | (r << 16) | (g << 8) | b;
+                    img.setRGB(x, y, p);
+                }
+            }
+
+            label_image.setText(null);
+            label_image.setIcon(ResizeImage(img));
+
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        }
+        //get image width and height
+
+
     }//GEN-LAST:event_button_negatifEffectActionPerformed
 
     private void button_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_resetActionPerformed
@@ -327,6 +376,52 @@ public class Main extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_button_originalImageActionPerformed
+
+    private void button_grayScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_grayScaleActionPerformed
+        //   File file = null;
+
+        try {
+            BufferedImage image = null;
+            int width;
+            int height;
+            File input = new File(text_filePath.getText());
+            try {
+                image = ImageIO.read(input);
+            } catch (IOException e) {
+            }
+
+            width = image.getWidth();
+            height = image.getHeight();
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    Color c = new Color(image.getRGB(j, i));
+
+                    int red = (int) (c.getRed() * 0.299);
+                    int green = (int) (c.getGreen() * 0.587);
+                    int blue = (int) (c.getBlue() * 0.114);
+                    Color newColor = new Color(red + green + blue,
+                            red + green + blue, red + green + blue);
+                    image.setRGB(j, i, newColor.getRGB());
+                }
+            }
+            label_image.setText(null);
+            label_image.setIcon(ResizeImage(image));
+//            try {
+//                bi = ImageIO.read(file);
+//            } catch (Exception e) {
+//            }
+//            label_image.setText(null);
+//            label_image.setIcon(ResizeImage(bi));
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+//
+//        if (confirmed == JOptionPane.YES_OPTION) {
+//            dispose();
+//        }
+        }
+    }//GEN-LAST:event_button_grayScaleActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
