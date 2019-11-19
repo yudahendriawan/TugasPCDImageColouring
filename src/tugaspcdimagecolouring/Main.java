@@ -5,14 +5,20 @@
  */
 package tugaspcdimagecolouring;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -38,7 +44,6 @@ public class Main extends javax.swing.JFrame {
 
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel2 = new javax.swing.JPanel();
-        panel_image = new javax.swing.JPanel();
         button_negatifEffect = new javax.swing.JButton();
         button_orginialImage = new javax.swing.JButton();
         button_grayScale = new javax.swing.JButton();
@@ -54,27 +59,14 @@ public class Main extends javax.swing.JFrame {
         button_fileChooser = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         text_filePath = new javax.swing.JTextField();
+        label_image = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
-
-        panel_image.setBackground(new java.awt.Color(255, 255, 255));
-        panel_image.setForeground(new java.awt.Color(102, 102, 255));
-
-        javax.swing.GroupLayout panel_imageLayout = new javax.swing.GroupLayout(panel_image);
-        panel_image.setLayout(panel_imageLayout);
-        panel_imageLayout.setHorizontalGroup(
-            panel_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-        panel_imageLayout.setVerticalGroup(
-            panel_imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
 
         button_negatifEffect.setBackground(new java.awt.Color(0, 0, 0));
         button_negatifEffect.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -164,6 +156,14 @@ public class Main extends javax.swing.JFrame {
         text_filePath.setFocusable(false);
         text_filePath.setRequestFocusEnabled(false);
 
+        label_image.setBackground(new java.awt.Color(255, 255, 255));
+        label_image.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_image.setForeground(new java.awt.Color(255, 255, 255));
+        label_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_image.setText("Show Image");
+        label_image.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 1, true));
+        label_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -185,18 +185,21 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
                         .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panel_image, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43))
+                        .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +228,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(button_highPassFilter)
                         .addGap(18, 18, 18)
                         .addComponent(button_highBoostFilter))
-                    .addComponent(panel_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(label_image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -246,25 +249,36 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_button_orginialImageActionPerformed
 
     private void button_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_exitActionPerformed
-       
-                int confirmed = JOptionPane.showConfirmDialog(null,
-                        "Are you sure you want to exit the program?", "Exit Program Message Box",
-                        JOptionPane.YES_NO_OPTION);
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to exit the program?", "Confirmation Dialog",
+                JOptionPane.YES_NO_OPTION);
 
-                if (confirmed == JOptionPane.YES_OPTION) {
-                    dispose();
-                }
-            
+        if (confirmed == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+
 //        System.exit(0);
 //        dispose();
     }//GEN-LAST:event_button_exitActionPerformed
 
     private void button_fileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_fileChooserActionPerformed
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Choose Image..");
+        FileNameExtensionFilter filter
+                = new FileNameExtensionFilter("JPG Images", "jpg", "png");
+        chooser.setFileFilter(filter);
+
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
-        String filename = file.getAbsolutePath();
+        String filename = file.getName();
         text_filePath.setText(filename);
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(file);
+        } catch (Exception e) {
+        }
+        label_image.setText(null);
+        label_image.setIcon(ResizeImage(bi));
     }//GEN-LAST:event_button_fileChooserActionPerformed
 
     /**
@@ -302,6 +316,14 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+    public ImageIcon ResizeImage(BufferedImage ImagePath) {
+        ImageIcon MyImage = new ImageIcon(ImagePath);
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg, BorderLayout.CENTER);
+        return image;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_contrast;
     private javax.swing.JButton button_exit;
@@ -319,7 +341,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel panel_image;
+    private javax.swing.JLabel label_image;
     private javax.swing.JTextField text_filePath;
     // End of variables declaration//GEN-END:variables
 }
