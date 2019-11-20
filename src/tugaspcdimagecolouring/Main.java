@@ -636,7 +636,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("error: " + e.getMessage());
                 }
-            } else if (text_filePath.getText().equals("Treshold Active")) {
+            } else if (text_getClick.getText().equals("Treshold Active")) {
                 int width;
                 int height;
                 double tresh = (double) slider.getValue();
@@ -649,7 +649,7 @@ public class Main extends javax.swing.JFrame {
                     Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
                     Mat destination = new Mat(source.rows(), source.cols(), source.type());
 
-                    Imgproc.threshold(source, destination, 200, 255, Imgproc.THRESH_BINARY);
+                    Imgproc.threshold(source, destination, tresh, 255, Imgproc.THRESH_BINARY);
 
                     Image imageTreshold = Mat2BufferedImage(destination);
 //        displayImage(imagegrayshow, "grayscale");
@@ -689,29 +689,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_button_aboutActionPerformed
 
     private void button_tresholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_tresholdingActionPerformed
-        try {
-            //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-            String alamat = text_filePath.getText();
-            try {
-                System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-                Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
-                Mat destination = new Mat(source.rows(), source.cols(), source.type());
-                Imgproc.threshold(source, destination, 200, 255, Imgproc.THRESH_BINARY);
-
-                Image imageTreshold = Mat2BufferedImage(destination);
-//        displayImage(imagegrayshow, "grayscale");
-                imageTreshold = imageTreshold.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
-                ImageIcon i = new ImageIcon(imageTreshold);
-                label_image.setIcon(i);
-                label_image.setText("");
-
-            } catch (Exception e) {
-                System.out.println("error: " + e.getMessage());
-            }
-        } catch (NullPointerException e) {
+        if (text_filePath.getText().equals("")) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
                     JOptionPane.OK_OPTION);
+        } else {
+            text_getClick.setText("Treshold Active");
+            slider.setEnabled(true);
         }
     }//GEN-LAST:event_button_tresholdingActionPerformed
 
