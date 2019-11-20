@@ -136,6 +136,11 @@ public class Main extends javax.swing.JFrame {
         button_tresholding.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         button_tresholding.setForeground(new java.awt.Color(0, 204, 204));
         button_tresholding.setText("Tresholding");
+        button_tresholding.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_tresholdingActionPerformed(evt);
+            }
+        });
 
         button_contrast.setBackground(new java.awt.Color(0, 0, 0));
         button_contrast.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -587,9 +592,9 @@ public class Main extends javax.swing.JFrame {
             if (text_getClick.getText().equals("Brightness Active")) {
                 int width;
                 int height;
-                double alpha = (double) slider.getValue() / 100;
+                double alpha = 1;
                 //   System.out.println(alpha);
-                double beta = 50;
+                double beta = (double) slider.getValue() - 100;
                 String alamat = text_filePath.getText();
                 try {
                     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -607,8 +612,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("error: " + e.getMessage());
                 }
-            } 
-            else if (text_getClick.getText().equals("Contrast Active")) {
+            } else if (text_getClick.getText().equals("Contrast Active")) {
                 int width;
                 int height;
                 double alpha = (double) slider.getValue() / 50;
@@ -632,8 +636,32 @@ public class Main extends javax.swing.JFrame {
                 } catch (Exception e) {
                     System.out.println("error: " + e.getMessage());
                 }
+            } else if (text_filePath.getText().equals("Treshold Active")) {
+                int width;
+                int height;
+                double tresh = (double) slider.getValue();
+                // System.out.println(alpha);
+                //   System.out.println(alpha);
+                // double beta = 0;
+                String alamat = text_filePath.getText();
+                try {
+                    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                    Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
+                    Mat destination = new Mat(source.rows(), source.cols(), source.type());
+
+                    Imgproc.threshold(source, destination, 200, 255, Imgproc.THRESH_BINARY);
+
+                    Image imageTreshold = Mat2BufferedImage(destination);
+//        displayImage(imagegrayshow, "grayscale");
+                    imageTreshold = imageTreshold.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon i = new ImageIcon(imageTreshold);
+                    label_image.setIcon(i);
+                    label_image.setText("");
+
+                } catch (Exception e) {
+                    System.out.println("error: " + e.getMessage());
+                }
             }
-            //else if()
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
@@ -659,6 +687,33 @@ public class Main extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, path, "Anggota Kelompok", JOptionPane.CLOSED_OPTION);
 
     }//GEN-LAST:event_button_aboutActionPerformed
+
+    private void button_tresholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_tresholdingActionPerformed
+        try {
+            //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            String alamat = text_filePath.getText();
+            try {
+                System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
+                Mat destination = new Mat(source.rows(), source.cols(), source.type());
+                Imgproc.threshold(source, destination, 200, 255, Imgproc.THRESH_BINARY);
+
+                Image imageTreshold = Mat2BufferedImage(destination);
+//        displayImage(imagegrayshow, "grayscale");
+                imageTreshold = imageTreshold.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon i = new ImageIcon(imageTreshold);
+                label_image.setIcon(i);
+                label_image.setText("");
+
+            } catch (Exception e) {
+                System.out.println("error: " + e.getMessage());
+            }
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        }
+    }//GEN-LAST:event_button_tresholdingActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

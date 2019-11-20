@@ -239,6 +239,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Tresholding"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_tresholdingActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="button_contrast">
           <Properties>
