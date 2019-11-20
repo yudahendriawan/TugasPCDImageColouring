@@ -7,20 +7,31 @@ package tugaspcdimagecolouring;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -40,6 +51,12 @@ public class Main extends javax.swing.JFrame {
     JFileChooser chooser;
     String path = "C:\\Users\\pc\\Pictures";
     // public static final 
+    static String a, b, c;
+    String name = "  1. Yuda Hendriawan Budi H(06111640000010)  "
+            + "  2. Shafira Herlinawati(06111640000013)  "
+            + "  3. Sandy Editya Prakosa(06111640000046)  "
+            + "  4. M Naufal Al Faruq(06111640000084)  "
+            + "  5. Ario Fajar Pratama(06111640000087)  ";
 
     /**
      * Creates new form Main
@@ -47,7 +64,19 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         JFrame jframe = new JFrame("TUGAS PCD");
         jframe.setTitle("Tugas PCD Image Enhancement Colouring");
+       // jLabel5.setText("TUGAS PCD IMAGE ENHANCEMENT COLOURING");
+        //judul.setText("TUGAS PCD IMAGE ENHANCEMENT COLOURING");
         initComponents();
+        datadiri.setText(name);
+        ActionListener acl = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a = datadiri.getText();
+                b = a.substring(0,1);
+                c = a.substring(1,a.length());
+                datadiri.setText(c+b);
+            }
+        };new javax.swing.Timer(150, acl).start();
 
     }
 
@@ -68,10 +97,8 @@ public class Main extends javax.swing.JFrame {
         button_brightness = new javax.swing.JButton();
         button_tresholding = new javax.swing.JButton();
         button_contrast = new javax.swing.JButton();
-        button_lowPassFilter = new javax.swing.JButton();
-        button_highPassFilter = new javax.swing.JButton();
-        button_highBoostFilter = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        button_compress = new javax.swing.JButton();
+        datadiri = new javax.swing.JLabel();
         button_exit = new javax.swing.JButton();
         button_fileChooser = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -83,14 +110,18 @@ public class Main extends javax.swing.JFrame {
         text_getClick = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         button_about = new javax.swing.JButton();
+        text_sliderValue = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        judul = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image Enhancement Colouring");
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         button_negatifEffect.setBackground(new java.awt.Color(0, 0, 0));
         button_negatifEffect.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -101,6 +132,7 @@ public class Main extends javax.swing.JFrame {
                 button_negatifEffectActionPerformed(evt);
             }
         });
+        jPanel2.add(button_negatifEffect, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 178, 137, -1));
 
         button_grayScale.setBackground(new java.awt.Color(0, 0, 0));
         button_grayScale.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -111,6 +143,7 @@ public class Main extends javax.swing.JFrame {
                 button_grayScaleActionPerformed(evt);
             }
         });
+        jPanel2.add(button_grayScale, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 221, 137, -1));
 
         button_colorSpace.setBackground(new java.awt.Color(0, 0, 0));
         button_colorSpace.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -121,6 +154,7 @@ public class Main extends javax.swing.JFrame {
                 button_colorSpaceActionPerformed(evt);
             }
         });
+        jPanel2.add(button_colorSpace, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 264, 137, -1));
 
         button_brightness.setBackground(new java.awt.Color(0, 0, 0));
         button_brightness.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -131,6 +165,7 @@ public class Main extends javax.swing.JFrame {
                 button_brightnessActionPerformed(evt);
             }
         });
+        jPanel2.add(button_brightness, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 307, 137, -1));
 
         button_tresholding.setBackground(new java.awt.Color(0, 0, 0));
         button_tresholding.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -141,6 +176,7 @@ public class Main extends javax.swing.JFrame {
                 button_tresholdingActionPerformed(evt);
             }
         });
+        jPanel2.add(button_tresholding, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 393, 137, -1));
 
         button_contrast.setBackground(new java.awt.Color(0, 0, 0));
         button_contrast.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -151,26 +187,24 @@ public class Main extends javax.swing.JFrame {
                 button_contrastActionPerformed(evt);
             }
         });
+        jPanel2.add(button_contrast, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 350, 137, -1));
 
-        button_lowPassFilter.setBackground(new java.awt.Color(0, 0, 0));
-        button_lowPassFilter.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_lowPassFilter.setForeground(new java.awt.Color(0, 204, 204));
-        button_lowPassFilter.setText("Low Pass Filter");
+        button_compress.setBackground(new java.awt.Color(0, 0, 0));
+        button_compress.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        button_compress.setForeground(new java.awt.Color(0, 204, 204));
+        button_compress.setText("Compress");
+        button_compress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_compressActionPerformed(evt);
+            }
+        });
+        jPanel2.add(button_compress, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 436, 137, -1));
 
-        button_highPassFilter.setBackground(new java.awt.Color(0, 0, 0));
-        button_highPassFilter.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_highPassFilter.setForeground(new java.awt.Color(0, 204, 204));
-        button_highPassFilter.setText("High Pass Filter");
-
-        button_highBoostFilter.setBackground(new java.awt.Color(0, 0, 0));
-        button_highBoostFilter.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_highBoostFilter.setForeground(new java.awt.Color(0, 204, 204));
-        button_highBoostFilter.setText("High Boost Filter");
-
-        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TUGAS PCD IMAGE ENHANCEMENT COLOURING");
+        datadiri.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        datadiri.setForeground(new java.awt.Color(0, 204, 204));
+        datadiri.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        datadiri.setToolTipText("HALOOO");
+        jPanel2.add(datadiri, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 675, 890, 64));
 
         button_exit.setBackground(new java.awt.Color(0, 0, 0));
         button_exit.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -181,6 +215,7 @@ public class Main extends javax.swing.JFrame {
                 button_exitActionPerformed(evt);
             }
         });
+        jPanel2.add(button_exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(827, 637, 97, -1));
 
         button_fileChooser.setBackground(new java.awt.Color(0, 0, 0));
         button_fileChooser.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -191,10 +226,12 @@ public class Main extends javax.swing.JFrame {
                 button_fileChooserActionPerformed(evt);
             }
         });
+        jPanel2.add(button_fileChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 637, 137, -1));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setToolTipText("File.jpeg");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(699, 669, 126, 25));
 
         text_filePath.setEditable(false);
         text_filePath.setBackground(new java.awt.Color(0, 0, 0));
@@ -203,6 +240,7 @@ public class Main extends javax.swing.JFrame {
         text_filePath.setFocusable(false);
         text_filePath.setMargin(new java.awt.Insets(2, 10, 2, 2));
         text_filePath.setRequestFocusEnabled(false);
+        jPanel2.add(text_filePath, new org.netbeans.lib.awtextra.AbsoluteConstraints(372, 637, 401, 25));
 
         label_image.setBackground(new java.awt.Color(255, 255, 255));
         label_image.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -211,6 +249,7 @@ public class Main extends javax.swing.JFrame {
         label_image.setText("Show Image");
         label_image.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 1, true));
         label_image.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(label_image, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 134, 700, 415));
 
         button_reset.setBackground(new java.awt.Color(0, 0, 0));
         button_reset.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -221,6 +260,7 @@ public class Main extends javax.swing.JFrame {
                 button_resetActionPerformed(evt);
             }
         });
+        jPanel2.add(button_reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 96, 97, -1));
 
         button_originalImage.setBackground(new java.awt.Color(0, 0, 0));
         button_originalImage.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -231,6 +271,7 @@ public class Main extends javax.swing.JFrame {
                 button_originalImageActionPerformed(evt);
             }
         });
+        jPanel2.add(button_originalImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 134, 137, 26));
 
         slider.setBackground(new java.awt.Color(51, 51, 51));
         slider.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -255,6 +296,7 @@ public class Main extends javax.swing.JFrame {
                 sliderMouseWheelMoved(evt);
             }
         });
+        jPanel2.add(slider, new org.netbeans.lib.awtextra.AbsoluteConstraints(217, 567, 700, -1));
 
         text_getClick.setEditable(false);
         text_getClick.setBackground(new java.awt.Color(0, 0, 0));
@@ -266,10 +308,13 @@ public class Main extends javax.swing.JFrame {
                 text_getClickActionPerformed(evt);
             }
         });
+        jPanel2.add(text_getClick, new org.netbeans.lib.awtextra.AbsoluteConstraints(326, 96, 187, 24));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 204, 204));
-        jLabel3.setText("Button Active");
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Slider Value");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 479, 137, -1));
 
         button_about.setBackground(new java.awt.Color(0, 0, 0));
         button_about.setForeground(new java.awt.Color(0, 204, 204));
@@ -279,102 +324,33 @@ public class Main extends javax.swing.JFrame {
                 button_aboutActionPerformed(evt);
             }
         });
+        jPanel2.add(button_about, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 637, 140, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_colorSpace, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_brightness, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(button_about, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(text_getClick, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(button_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(43, 43, 43))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(183, 183, 183))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button_reset)
-                    .addComponent(text_getClick, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(button_originalImage, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_negatifEffect)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(button_grayScale)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_colorSpace)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_brightness)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_contrast)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_tresholding)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_lowPassFilter)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_highPassFilter)
-                        .addGap(18, 18, 18)
-                        .addComponent(button_highBoostFilter))
-                    .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(slider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button_fileChooser)
-                    .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button_exit)
-                    .addComponent(button_about))
-                .addGap(38, 38, 38))
-        );
+        text_sliderValue.setEditable(false);
+        text_sliderValue.setBackground(new java.awt.Color(0, 0, 0));
+        text_sliderValue.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        text_sliderValue.setForeground(new java.awt.Color(0, 204, 204));
+        text_sliderValue.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_sliderValue.setToolTipText("Original Image Active");
+        text_sliderValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_sliderValueActionPerformed(evt);
+            }
+        });
+        jPanel2.add(text_sliderValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 502, 137, 44));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 710));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel4.setText("Button Active");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(227, 98, -1, -1));
+
+        judul.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        judul.setForeground(new java.awt.Color(0, 204, 204));
+        judul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        judul.setText("TUGAS PCD IMAGE ENHANCEMENT COLOURING");
+        jPanel2.add(judul, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 13, 881, 64));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 750));
 
         pack();
         setLocationRelativeTo(null);
@@ -441,6 +417,7 @@ public class Main extends javax.swing.JFrame {
             label_image.setIcon(ResizeImage(img));
             text_getClick.setText("Negative Effect Active");
             slider.setEnabled(false);
+            text_sliderValue.setText(null);
 
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
@@ -459,6 +436,7 @@ public class Main extends javax.swing.JFrame {
         text_getClick.setText(null);
         slider.setEnabled(false);
         slider.setValue(100);
+        text_sliderValue.setText(null);
     }//GEN-LAST:event_button_resetActionPerformed
 
     private void button_originalImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_originalImageActionPerformed
@@ -476,6 +454,7 @@ public class Main extends javax.swing.JFrame {
             label_image.setIcon(ResizeImage(bi));
             text_getClick.setText("Original Image Active");
             slider.setEnabled(false);
+            text_sliderValue.setText(null);
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
@@ -520,6 +499,7 @@ public class Main extends javax.swing.JFrame {
             label_image.setIcon(ResizeImage(image));
             text_getClick.setText("Gray Scale Active");
             slider.setEnabled(false);
+            text_sliderValue.setText(null);
 
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
@@ -553,6 +533,7 @@ public class Main extends javax.swing.JFrame {
             label_image.setIcon(ResizeImage(image1));
             text_getClick.setText("Color Space Active");
             slider.setEnabled(false);
+            text_sliderValue.setText(null);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
@@ -568,6 +549,12 @@ public class Main extends javax.swing.JFrame {
         } else {
             text_getClick.setText("Contrast Active");
             slider.setEnabled(true);
+            slider.setMinimum(0);
+            slider.setMaximum(4);
+            slider.setValue(2);
+            //  slider.setMajorTickSpacing(1);
+            slider.setMinorTickSpacing(1);
+            text_sliderValue.setText(null);
         }
     }//GEN-LAST:event_button_contrastActionPerformed
 
@@ -579,6 +566,11 @@ public class Main extends javax.swing.JFrame {
         } else {
             text_getClick.setText("Brightness Active");
             slider.setEnabled(true);
+            slider.setMinimum(-100);
+            slider.setMaximum(100);
+            slider.setValue(0);
+            slider.setMajorTickSpacing(25);
+            text_sliderValue.setText(null);
         }
 
     }//GEN-LAST:event_button_brightnessActionPerformed
@@ -594,7 +586,8 @@ public class Main extends javax.swing.JFrame {
                 int height;
                 double alpha = 1;
                 //   System.out.println(alpha);
-                double beta = (double) slider.getValue() - 100;
+                double beta = (double) slider.getValue();
+                text_sliderValue.setText(String.valueOf(beta));
                 String alamat = text_filePath.getText();
                 try {
                     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -615,7 +608,8 @@ public class Main extends javax.swing.JFrame {
             } else if (text_getClick.getText().equals("Contrast Active")) {
                 int width;
                 int height;
-                double alpha = (double) slider.getValue() / 50;
+                double alpha = (double) slider.getValue();
+                text_sliderValue.setText(String.valueOf(alpha));
                 System.out.println(alpha);
                 //   System.out.println(alpha);
                 double beta = 0;
@@ -640,6 +634,7 @@ public class Main extends javax.swing.JFrame {
                 int width;
                 int height;
                 double tresh = (double) slider.getValue();
+                text_sliderValue.setText(String.valueOf(tresh));
                 // System.out.println(alpha);
                 //   System.out.println(alpha);
                 // double beta = 0;
@@ -660,6 +655,43 @@ public class Main extends javax.swing.JFrame {
 
                 } catch (Exception e) {
                     System.out.println("error: " + e.getMessage());
+                }
+            } else if (text_getClick.getText().equals("Compress Active")) {
+                try {
+                    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                    String dc = text_filePath.getText();
+                    File input = new File(dc);
+                    float scale = (float) slider.getValue() / 100;
+                    text_sliderValue.setText(String.valueOf(scale));
+                    System.out.println(scale);
+                    BufferedImage image = ImageIO.read(input);
+                    File compressedImageFile = new File("compress.jpg");
+                    OutputStream os = new FileOutputStream(compressedImageFile);
+                    Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+                    ImageWriter writer = (ImageWriter) writers.next();
+                    ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+                    writer.setOutput(ios);
+                    ImageWriteParam param = writer.getDefaultWriteParam();
+                    param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                    param.setCompressionQuality((float) scale);
+                    writer.write(null, new IIOImage(image, null, null), param);
+                    os.close();
+                    ios.close();
+                    writer.dispose();
+                    Mat i = Imgcodecs.imread("compress.jpg");
+                    BufferedImage imageshow = Mat2BufferedImage(i);
+                    //  displayImage(imageshow, "image");
+
+                    label_image.setText(null);
+                    label_image.setIcon(null);
+                    label_image.setIcon(ResizeImage(imageshow));
+                    //text_getClick.setText("Gray Scale Active");
+                    // slider.setEnabled(false);
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please choose image first", "Image has not been attached",
+                            JOptionPane.OK_OPTION);
                 }
             }
         } catch (NullPointerException e) {
@@ -696,8 +728,71 @@ public class Main extends javax.swing.JFrame {
         } else {
             text_getClick.setText("Treshold Active");
             slider.setEnabled(true);
+            slider.setMinimum(0);
+            slider.setMaximum(255);
+            slider.setValue(127);
+            text_sliderValue.setText(null);
+//            JOptionPane.showMessageDialog(null, "Slider is activated", "Message", (int) JOptionPane.CLOSED_OPTION);
+//            float CENTER_ALIGNMENT1 = JOptionPane.CENTER_ALIGNMENT;
+//            //float CENTER_ALIGNMENT1 =O JOptionPane.CENTER_ALIGNMENT;
         }
     }//GEN-LAST:event_button_tresholdingActionPerformed
+
+    private void button_compressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_compressActionPerformed
+        if (text_filePath.getText().equals("")) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        } else {
+            text_getClick.setText("Compress Active");
+            slider.setEnabled(true);
+            slider.setMinimum(0);
+            slider.setMaximum(100);
+            slider.setValue(50);
+            text_sliderValue.setText(null);
+//            JOptionPane.showMessageDialog(null, "Slider is activated", "Message", (int) JOptionPane.CLOSED_OPTION);
+//            float CENTER_ALIGNMENT1 = JOptionPane.CENTER_ALIGNMENT;
+//            //float CENTER_ALIGNMENT1 =O JOptionPane.CENTER_ALIGNMENT;
+        }
+//        try {
+//            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+//            String dc = text_filePath.getText();
+//            File input = new File(dc);
+//
+//            BufferedImage image = ImageIO.read(input);
+//            File compressedImageFile = new File("compress.jpg");
+//            OutputStream os = new FileOutputStream(compressedImageFile);
+//            Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+//            ImageWriter writer = (ImageWriter) writers.next();
+//            ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+//            writer.setOutput(ios);
+//            ImageWriteParam param = writer.getDefaultWriteParam();
+//            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+//            param.setCompressionQuality((float) 0.05);
+//            writer.write(null, new IIOImage(image, null, null), param);
+//            os.close();
+//            ios.close();
+//            writer.dispose();
+//            Mat i = Imgcodecs.imread("compress.jpg");
+//            BufferedImage imageshow = Mat2BufferedImage(i);
+//            //  displayImage(imageshow, "image");
+//
+//            label_image.setText(null);
+//            label_image.setIcon(null);
+//            label_image.setIcon(ResizeImage(imageshow));
+//            text_getClick.setText("Gray Scale Active");
+//            slider.setEnabled(false);
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null,
+//                    "Please choose image first", "Image has not been attached",
+//                    JOptionPane.OK_OPTION);
+//        }
+    }//GEN-LAST:event_button_compressActionPerformed
+
+    private void text_sliderValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_sliderValueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_sliderValueActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -726,6 +821,8 @@ public class Main extends javax.swing.JFrame {
         File file = chooser.getSelectedFile();
         text_filePath.setText(file.toString());
         text_getClick.setText("Original Image Active");
+        slider.setEnabled(false);
+        text_sliderValue.setText(null);
         return file;
     }
 
@@ -743,30 +840,44 @@ public class Main extends javax.swing.JFrame {
         return image;
     }
 
+    public static void displayImage(Image img, String title) {
+        ImageIcon icon = new ImageIcon(img);
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(img.getWidth(null) + 50, img.getHeight(null) + 50);
+        JLabel lbl = new JLabel();
+        lbl.setIcon(icon);
+        frame.add(lbl);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle(title);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_about;
     private javax.swing.JButton button_brightness;
     private javax.swing.JButton button_colorSpace;
+    private javax.swing.JButton button_compress;
     private javax.swing.JButton button_contrast;
     private javax.swing.JButton button_exit;
     private javax.swing.JButton button_fileChooser;
     private javax.swing.JButton button_grayScale;
-    private javax.swing.JButton button_highBoostFilter;
-    private javax.swing.JButton button_highPassFilter;
-    private javax.swing.JButton button_lowPassFilter;
     private javax.swing.JButton button_negatifEffect;
     private javax.swing.JButton button_originalImage;
     private javax.swing.JButton button_reset;
     private javax.swing.JButton button_tresholding;
+    private javax.swing.JLabel datadiri;
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel judul;
     private javax.swing.JLabel label_image;
     private javax.swing.JSlider slider;
     private javax.swing.JTextField text_filePath;
     private javax.swing.JTextField text_getClick;
+    private javax.swing.JTextField text_sliderValue;
     // End of variables declaration//GEN-END:variables
 }
