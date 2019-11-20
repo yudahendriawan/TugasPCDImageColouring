@@ -28,6 +28,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.HighGui;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -44,6 +45,8 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
+        JFrame jframe = new JFrame("TUGAS PCD");
+        jframe.setTitle("Tugas PCD Image Enhancement Colouring");
         initComponents();
 
     }
@@ -62,7 +65,7 @@ public class Main extends javax.swing.JFrame {
         button_negatifEffect = new javax.swing.JButton();
         button_grayScale = new javax.swing.JButton();
         button_colorSpace = new javax.swing.JButton();
-        button_levelSlicing = new javax.swing.JButton();
+        button_brightness = new javax.swing.JButton();
         button_tresholding = new javax.swing.JButton();
         button_contrast = new javax.swing.JButton();
         button_lowPassFilter = new javax.swing.JButton();
@@ -76,8 +79,13 @@ public class Main extends javax.swing.JFrame {
         label_image = new javax.swing.JLabel();
         button_reset = new javax.swing.JButton();
         button_originalImage = new javax.swing.JButton();
+        slider = new javax.swing.JSlider();
+        text_getClick = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        button_about = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Image Enhancement Colouring");
         setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,7 +95,7 @@ public class Main extends javax.swing.JFrame {
         button_negatifEffect.setBackground(new java.awt.Color(0, 0, 0));
         button_negatifEffect.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         button_negatifEffect.setForeground(new java.awt.Color(0, 204, 204));
-        button_negatifEffect.setText("Efek Negatif");
+        button_negatifEffect.setText("Negative Effect");
         button_negatifEffect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_negatifEffectActionPerformed(evt);
@@ -114,10 +122,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        button_levelSlicing.setBackground(new java.awt.Color(0, 0, 0));
-        button_levelSlicing.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        button_levelSlicing.setForeground(new java.awt.Color(0, 204, 204));
-        button_levelSlicing.setText("Level Slicing");
+        button_brightness.setBackground(new java.awt.Color(0, 0, 0));
+        button_brightness.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        button_brightness.setForeground(new java.awt.Color(0, 204, 204));
+        button_brightness.setText("Brightness");
+        button_brightness.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_brightnessActionPerformed(evt);
+            }
+        });
 
         button_tresholding.setBackground(new java.awt.Color(0, 0, 0));
         button_tresholding.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -128,6 +141,11 @@ public class Main extends javax.swing.JFrame {
         button_contrast.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         button_contrast.setForeground(new java.awt.Color(0, 204, 204));
         button_contrast.setText("Contrast");
+        button_contrast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_contrastActionPerformed(evt);
+            }
+        });
 
         button_lowPassFilter.setBackground(new java.awt.Color(0, 0, 0));
         button_lowPassFilter.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -146,6 +164,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TUGAS PCD IMAGE ENHANCEMENT COLOURING");
 
         button_exit.setBackground(new java.awt.Color(0, 0, 0));
@@ -172,12 +191,17 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setToolTipText("File.jpeg");
 
+        text_filePath.setEditable(false);
+        text_filePath.setBackground(new java.awt.Color(0, 0, 0));
+        text_filePath.setForeground(new java.awt.Color(0, 204, 204));
+        text_filePath.setToolTipText("File Path");
         text_filePath.setFocusable(false);
+        text_filePath.setMargin(new java.awt.Insets(2, 10, 2, 2));
         text_filePath.setRequestFocusEnabled(false);
 
         label_image.setBackground(new java.awt.Color(255, 255, 255));
-        label_image.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        label_image.setForeground(new java.awt.Color(255, 255, 255));
+        label_image.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label_image.setForeground(new java.awt.Color(0, 204, 204));
         label_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_image.setText("Show Image");
         label_image.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 204, 204), 1, true));
@@ -203,53 +227,113 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        slider.setBackground(new java.awt.Color(51, 51, 51));
+        slider.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        slider.setForeground(new java.awt.Color(0, 204, 204));
+        slider.setMajorTickSpacing(50);
+        slider.setMaximum(200);
+        slider.setMinorTickSpacing(5);
+        slider.setPaintLabels(true);
+        slider.setPaintTicks(true);
+        slider.setToolTipText("");
+        slider.setValue(100);
+        slider.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        slider.setEnabled(false);
+        slider.setName(""); // NOI18N
+        slider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderStateChanged(evt);
+            }
+        });
+        slider.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                sliderMouseWheelMoved(evt);
+            }
+        });
+
+        text_getClick.setEditable(false);
+        text_getClick.setBackground(new java.awt.Color(0, 0, 0));
+        text_getClick.setForeground(new java.awt.Color(0, 204, 204));
+        text_getClick.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        text_getClick.setToolTipText("Original Image Active");
+        text_getClick.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_getClickActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel3.setText("Button Active");
+
+        button_about.setBackground(new java.awt.Color(0, 0, 0));
+        button_about.setForeground(new java.awt.Color(0, 204, 204));
+        button_about.setText("About Program");
+        button_about.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_aboutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_colorSpace, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_brightness, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(button_about, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(button_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(button_negatifEffect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_grayScale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_colorSpace, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_levelSlicing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_contrast, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_tresholding, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_lowPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_highPassFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_highBoostFilter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button_originalImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(57, 57, 57)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(button_fileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(text_filePath)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(button_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(text_getClick, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(button_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(43, 43, 43))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(183, 183, 183))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button_reset)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(button_reset)
+                    .addComponent(text_getClick, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(button_originalImage, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -260,7 +344,7 @@ public class Main extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(button_colorSpace)
                         .addGap(18, 18, 18)
-                        .addComponent(button_levelSlicing)
+                        .addComponent(button_brightness)
                         .addGap(18, 18, 18)
                         .addComponent(button_contrast)
                         .addGap(18, 18, 18)
@@ -272,20 +356,23 @@ public class Main extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(button_highBoostFilter))
                     .addComponent(label_image, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(button_exit)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(button_fileChooser)))
-                .addGap(30, 30, 30))
+                .addGap(18, 18, 18)
+                .addComponent(slider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(button_fileChooser)
+                    .addComponent(text_filePath, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button_exit)
+                    .addComponent(button_about))
+                .addGap(38, 38, 38))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 630));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 710));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_exitActionPerformed
@@ -294,21 +381,22 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmed == JOptionPane.YES_OPTION) {
+            System.exit(0);
             dispose();
-        }
+        } else {
 
-        System.exit(0);
-        dispose();
+        }
     }//GEN-LAST:event_button_exitActionPerformed
 
     private void button_fileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_fileChooserActionPerformed
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(file());
+            label_image.setText(null);
+            label_image.setIcon(ResizeImage(bi));
         } catch (Exception e) {
         }
-        label_image.setText(null);
-        label_image.setIcon(ResizeImage(bi));
+
 
     }//GEN-LAST:event_button_fileChooserActionPerformed
 
@@ -346,6 +434,8 @@ public class Main extends javax.swing.JFrame {
             label_image.setText(null);
             label_image.setIcon(null);
             label_image.setIcon(ResizeImage(img));
+            text_getClick.setText("Negative Effect Active");
+            slider.setEnabled(false);
 
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
@@ -361,12 +451,16 @@ public class Main extends javax.swing.JFrame {
         label_image.setIcon(null);
         label_image.setText("Show Image");
         text_filePath.setText(null);
+        text_getClick.setText(null);
+        slider.setEnabled(false);
+        slider.setValue(100);
     }//GEN-LAST:event_button_resetActionPerformed
 
     private void button_originalImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_originalImageActionPerformed
         //   File file = null;
         try {
             File file = new File(text_filePath.getText());
+
             BufferedImage bi = null;
             try {
                 bi = ImageIO.read(file);
@@ -375,6 +469,8 @@ public class Main extends javax.swing.JFrame {
             label_image.setText(null);
             label_image.setIcon(null);
             label_image.setIcon(ResizeImage(bi));
+            text_getClick.setText("Original Image Active");
+            slider.setEnabled(false);
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
@@ -417,20 +513,13 @@ public class Main extends javax.swing.JFrame {
             label_image.setText(null);
             label_image.setIcon(null);
             label_image.setIcon(ResizeImage(image));
-//            try {
-//                bi = ImageIO.read(file);
-//            } catch (Exception e) {
-//            }
-//            label_image.setText(null);
-//            label_image.setIcon(ResizeImage(bi));
+            text_getClick.setText("Gray Scale Active");
+            slider.setEnabled(false);
+
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
                     JOptionPane.OK_OPTION);
-//
-//        if (confirmed == JOptionPane.YES_OPTION) {
-//            dispose();
-//        }
         }
     }//GEN-LAST:event_button_grayScaleActionPerformed
 
@@ -438,7 +527,12 @@ public class Main extends javax.swing.JFrame {
         try {
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
             File input = new File(text_filePath.getText());
-            BufferedImage image = ImageIO.read(input);
+            BufferedImage image = null;
+            try {
+                image = ImageIO.read(input);
+            } catch (Exception e) {
+            }
+
             byte[] data = ((DataBufferByte) image.getRaster().
                     getDataBuffer()).getData();
             Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
@@ -452,16 +546,124 @@ public class Main extends javax.swing.JFrame {
             label_image.setText(null);
             label_image.setIcon(null);
             label_image.setIcon(ResizeImage(image1));
-        } catch (IOException e) {
+            text_getClick.setText("Color Space Active");
+            slider.setEnabled(false);
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Please choose image first", "Image has not been attached",
                     JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_button_colorSpaceActionPerformed
 
+    private void button_contrastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_contrastActionPerformed
+        if (text_filePath.getText().equals("")) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        } else {
+            text_getClick.setText("Contrast Active");
+            slider.setEnabled(true);
+        }
+    }//GEN-LAST:event_button_contrastActionPerformed
+
+    private void button_brightnessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_brightnessActionPerformed
+        if (text_filePath.getText().equals("")) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        } else {
+            text_getClick.setText("Brightness Active");
+            slider.setEnabled(true);
+        }
+
+    }//GEN-LAST:event_button_brightnessActionPerformed
+
+    private void sliderMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_sliderMouseWheelMoved
+
+    }//GEN-LAST:event_sliderMouseWheelMoved
+
+    private void sliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderStateChanged
+        try {
+            if (text_getClick.getText().equals("Brightness Active")) {
+                int width;
+                int height;
+                double alpha = (double) slider.getValue() / 100;
+                //   System.out.println(alpha);
+                double beta = 50;
+                String alamat = text_filePath.getText();
+                try {
+                    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                    Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
+                    Mat destination = new Mat(source.rows(), source.cols(), source.type());
+                    source.convertTo(destination, -1, alpha, beta);
+
+                    Image imagebrightness = Mat2BufferedImage(destination);
+//        displayImage(imagegrayshow, "grayscale");
+                    imagebrightness = imagebrightness.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon i = new ImageIcon(imagebrightness);
+                    label_image.setIcon(i);
+                    label_image.setText("");
+
+                } catch (Exception e) {
+                    System.out.println("error: " + e.getMessage());
+                }
+            } 
+            else if (text_getClick.getText().equals("Contrast Active")) {
+                int width;
+                int height;
+                double alpha = (double) slider.getValue() / 50;
+                System.out.println(alpha);
+                //   System.out.println(alpha);
+                double beta = 0;
+                String alamat = text_filePath.getText();
+                try {
+                    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                    Mat source = Imgcodecs.imread(alamat, Imgcodecs.IMREAD_COLOR);
+                    Mat destination = new Mat(source.rows(), source.cols(), source.type());
+                    source.convertTo(destination, -1, alpha, beta);
+
+                    Image imageConstrast = Mat2BufferedImage(destination);
+//        displayImage(imagegrayshow, "grayscale");
+                    imageConstrast = imageConstrast.getScaledInstance(label_image.getWidth(), label_image.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon i = new ImageIcon(imageConstrast);
+                    label_image.setIcon(i);
+                    label_image.setText("");
+
+                } catch (Exception e) {
+                    System.out.println("error: " + e.getMessage());
+                }
+            }
+            //else if()
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Please choose image first", "Image has not been attached",
+                    JOptionPane.OK_OPTION);
+        }
+
+
+    }//GEN-LAST:event_sliderStateChanged
+
+    private void text_getClickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_getClickActionPerformed
+        if (button_brightness.isRequestFocusEnabled()) {
+            text_getClick.setText("Brightness is Active");
+
+        }
+    }//GEN-LAST:event_text_getClickActionPerformed
+
+    private void button_aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_aboutActionPerformed
+        String path = "\n06111640000010 - Yuda Hendriawan Budi H \n\n"
+                + "06111640000013 - Shafira Herlinawati \n\n"
+                + "06111640000046 - Sandy Editya Prakosa\n\n"
+                + "06111640000084 - M Naufal Al Faruq\n\n"
+                + "06111640000087 - Ario Fajar Pratama \n\n";
+        JOptionPane.showMessageDialog(null, path, "Anggota Kelompok", JOptionPane.CLOSED_OPTION);
+
+    }//GEN-LAST:event_button_aboutActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 new Main().setVisible(true);
             }
         });
@@ -484,11 +686,28 @@ public class Main extends javax.swing.JFrame {
         chooser.showOpenDialog(null);
         File file = chooser.getSelectedFile();
         text_filePath.setText(file.toString());
+        text_getClick.setText("Original Image Active");
         return file;
+    }
+
+    public static BufferedImage Mat2BufferedImage(Mat m) {
+        int type = BufferedImage.TYPE_BYTE_GRAY;
+        if (m.channels() > 1) {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+        int bufferSize = m.channels() * m.cols() * m.rows();
+        byte[] b = new byte[bufferSize];
+        m.get(0, 0, b);
+        BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
+        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        System.arraycopy(b, 0, targetPixels, 0, b.length);
+        return image;
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton button_about;
+    private javax.swing.JButton button_brightness;
     private javax.swing.JButton button_colorSpace;
     private javax.swing.JButton button_contrast;
     private javax.swing.JButton button_exit;
@@ -496,7 +715,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton button_grayScale;
     private javax.swing.JButton button_highBoostFilter;
     private javax.swing.JButton button_highPassFilter;
-    private javax.swing.JButton button_levelSlicing;
     private javax.swing.JButton button_lowPassFilter;
     private javax.swing.JButton button_negatifEffect;
     private javax.swing.JButton button_originalImage;
@@ -505,8 +723,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel label_image;
+    private javax.swing.JSlider slider;
     private javax.swing.JTextField text_filePath;
+    private javax.swing.JTextField text_getClick;
     // End of variables declaration//GEN-END:variables
 }
